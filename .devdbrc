@@ -1,0 +1,6 @@
+[
+  {
+    "type": "sqlite",
+    "path": "/usr/share/angie/lara-mailblaster/database/database.sqlite"
+  }
+]

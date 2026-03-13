@@ -1,0 +1,5 @@
+create a docker with php.ini vars to suit
+preset cronjobs etc
+mailer to log
+
+check per job timeout (--timeout=0)

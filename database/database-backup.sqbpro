@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/usr/share/angie/lara-mailblaster/database/database.sqlite" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="5584"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,19:mainadmin_notifications"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">DROP TABLE 'email_logs';
+CREATE TABLE &quot;email_logs&quot; (
+	&quot;id&quot;	integer NOT NULL,
+	&quot;campaign_id&quot;	integer DEFAULT '1',
+	&quot;smtp_provider_id&quot;	integer,
+	&quot;recipient_email&quot;	varchar NOT NULL,
+	&quot;recipient_name&quot;	varchar,
+	&quot;subject&quot;	varchar NOT NULL,
+	&quot;status&quot;	varchar NOT NULL DEFAULT 'queued' CHECK(&quot;status&quot; IN ('queued', 'sending', 'sent', 'failed', 'paused', 'cancelled')),
+	&quot;attempts&quot;	integer NOT NULL DEFAULT '0',
+	&quot;error_message&quot;	text,
+	&quot;smtp_log&quot; text NULL,
+    &quot;message_id&quot; varchar NULL,
+    &quot;smtp_response_code&quot; integer NULL,
+    &quot;smtp_banner&quot; text NULL,
+    &quot;is_single_send&quot; BOOLEAN DEFAULT FALSE,
+	&quot;sent_at&quot;	datetime,
+	&quot;failed_at&quot;	datetime,
+	&quot;created_at&quot;	datetime,
+	&quot;updated_at&quot;	datetime,
+	PRIMARY KEY(&quot;id&quot; AUTOINCREMENT),
+	FOREIGN KEY(&quot;smtp_provider_id&quot;) REFERENCES &quot;smtp_providers&quot;(&quot;id&quot;) on delete set null,
+	FOREIGN KEY(&quot;campaign_id&quot;) REFERENCES &quot;campaigns&quot;(&quot;id&quot;) on delete cascade
+);
+</sql><current_tab id="0"/></tab_sql></sqlb_project>

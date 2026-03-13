@@ -1,0 +1,49 @@
+@extends('layouts.admin')
+@section('title', 'Mailing Lists')
+@section('page-title', 'Mailing Lists')
+
+@section('content')
+<div class="flex flex-col sm:flex-row justify-between items-center mb-4">
+    <h2 class="text-xl font-semibold text-gray-800">All Mailing Lists</h2>
+    <a href="{{ route('admin.mailing_lists.create') }}" class="btn-primary">
+        <i class="fas fa-plus mr-2"></i>Create New List
+    </a>
+</div>
+
+<div class="bg-white shadow-sm rounded-lg overflow-hidden">
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contacts</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            @forelse($mailingLists as $mailingList)
+            <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $mailingList->name }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $mailingList->description }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ number_format($mailingList->contacts_count) }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <a href="{{ route('admin.mailing_lists.edit', $mailingList) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                    <form action="{{ route('admin.mailing_lists.destroy', $mailingList) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this mailing list? This action cannot be undone.');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="4" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">No mailing lists found.</td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+    <div class="px-6 py-4">
+        {{ $mailingLists->links() }}
+    </div>
+</div>
+@endsection

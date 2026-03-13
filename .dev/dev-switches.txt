@@ -1,0 +1,49 @@
+ARTISAN COMMANDS
+----------------
+campaigns:queue-recurring       -   queue recurring campaigns
+email:process-queue             -   process Email Queue
+
+
+.env
+----------------
+
+#MAIL_MAILER=log
+MAIL_MAILER=smtp
+
+#QUEUE_CONNECTION=sync
+QUEUE_CONNECTION=redis
+
+
+
+
+create cronjobs
+-----------------
+# START QUEUE ON RESTART
+# @reboot /usr/bin/php '/usr/share/angie/lara-mailblaster/artisan' 'queue:work' --no-interaction --quiet
+(use systemd unit file)
+
+# QUEUE RECURRING CAMPAIGNS
+5 0 * * * /usr/bin/php '/usr/share/angie/lara-mailblaster/artisan' 'campaigns:queue-recurring' --no-interaction --quiet
+
+# SEND QUEUED EMAILS
+0,30 6,7,8,9,10,11,12,13,14,15,16,17,18 * * * /usr/bin/php '/usr/share/angie/lara-mailblaster/artisan' 'email:process-queue' --no-interaction --quiet
+
+# SYNC UNSUBSCRIBED CONTACTS
+2 0 * * * /usr/bin/php '/usr/share/angie/lara-mailblaster/artisan' 'brevo:sync-unsubscribed-contacts' --no-interaction --quiet
+
+
+
+
+
+start queue manually
+-----------------
+php artisan queue:work
+
+
+
+
+
+
+BITS
+------
+## 1 * * * * * cd /path/to/your/project && php artisan campaigns:queue-recurring >> /dev/null 2>&1
