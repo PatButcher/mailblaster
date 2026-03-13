@@ -1,0 +1,19 @@
+[Unit]
+Description=Laravel queue worker
+After=network.target mysql.service redis.service
+
+[Service]
+# The user and group that own the web files (usually www-data)
+User=www-data
+Group=www-data
+Restart=always
+RestartSec=5
+
+# Set the path to your Laravel project
+WorkingDirectory=/your/local/mailblasterdir/
+
+# The execution command
+ExecStart=/usr/bin/php /your/local/mailblasterdir/artisan queue:work --tries=3 --timeout=0
+
+[Install]
+WantedBy=multi-user.target
