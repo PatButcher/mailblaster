@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+// use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EmailLog extends Model
 {
     use HasFactory;
+    // , SoftDeletes;
 
     protected $fillable = [
         'campaign_id', 'smtp_provider_id', 'recipient_email', 'recipient_name',

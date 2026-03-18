@@ -1,4 +1,6 @@
 create a docker with php.ini vars to suit
+kube / etcd
+
 preset cronjobs etc
 mailer to log
 

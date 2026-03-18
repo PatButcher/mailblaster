@@ -43,11 +43,17 @@
             </div>
             <div class="flex items-center space-x-2 ml-4">
                 @if(in_array($campaign->status, ['draft', 'paused']))
-                <form action="{{ route('admin.campaigns.send', $campaign->id) }}" method="POST" class="inline">
+                <form action="@if($campaign->status === 'paused'){{ route('admin.campaigns.resume',$campaign->id) }}@else{{ route('admin.campaigns.send',$campaign->id) }}@endif" method="POST" class="inline">
                     @csrf
+                    @if ($campaign->status == 'paused')
+                    <button type="submit" onclick="return confirm('Resume this campaign and queue for sending?')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium">
+                        <i class="fas fa-paper-plane mr-1"></i>{{ $campaign->status === 'paused' ? 'Resume' : 'Send' }}
+                    </button>
+                    @else
                     <button type="submit" onclick="return confirm('Queue this campaign for sending?')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium">
                         <i class="fas fa-paper-plane mr-1"></i>{{ $campaign->status === 'paused' ? 'Resume' : 'Send' }}
                     </button>
+                    @endif
                 </form>
                 @endif
                 @if(in_array($campaign->status, ['queued', 'sending']))
