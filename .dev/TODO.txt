@@ -5,3 +5,8 @@ preset cronjobs etc
 mailer to log
 
 check per job timeout (--timeout=0)
+
+
+IMPLEMENT THE .env OPTION TO AUTO-UNSUBSCRIBE INTO EACH SMTP PROVIDER RECORD
+(retreive any unsubscribed contacts from each provider and add to list)
+#(unsubscribe list updates)

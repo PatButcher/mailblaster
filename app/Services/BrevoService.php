@@ -64,6 +64,7 @@ class BrevoService
         }
     }
 
+    // TODO: fix this
     /**
      * Get a list of unsubscribed contacts.
      *

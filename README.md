@@ -1,6 +1,8 @@
 
 # MAILBLASTER
 
+This application was inspired by the corruption of Greater Manchester Police.
+
 
 ## About
 

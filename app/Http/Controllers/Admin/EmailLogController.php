@@ -7,6 +7,7 @@ use App\Models\EmailLog;
 use App\Models\Campaign;
 use App\Services\EmailDispatchService;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class EmailLogController extends Controller
 {
@@ -23,16 +24,30 @@ class EmailLogController extends Controller
         if ($request->filled('status'))      $query->where('status', $request->status);
         if ($request->filled('campaign_id')) $query->where('campaign_id', $request->campaign_id);
         if ($request->filled('search'))      $query->where('recipient_email', 'like', '%' . $request->search . '%');
-        if ($request->filled('date_from'))   $query->whereDate('created_at', '>=', $request->date_from);
-        if ($request->filled('date_to'))     $query->whereDate('created_at', '<=', $request->date_to);
+        if ($request->filled('date_from'))   $query->whereDate('sent_at', '>=', $request->date_from);
+
+        // TODO: HOOK UP TO FRONT
+        // if ($request->filled('sent_at'))     $query->whereDate('sent_at', '>=', $request->sent_at);
+        $query->where('sent_at', '!=', null);
+
+        if ($request->filled('date_to'))     $query->whereDate('sent_at', '<=', $request->date_to);
         if ($request->filled('type')) {
             $query->where('is_single_send', $request->type === 'single');
         }
+
         $logs      = $query->orderBy('created_at', 'desc')->paginate(30)->withQueryString();
         $campaigns = Campaign::orderBy('name')->get();
         $statsToday = EmailLog::whereDate('created_at', today())
             ->selectRaw('status, COUNT(*) as count')->groupBy('status')->pluck('count', 'status');
-        return view('admin.logs.index', compact('logs', 'campaigns', 'statsToday'));
+
+
+        // $sentAt = Carbon::parse($logs['sent_at'])->format('H:i:s - d m Y');
+        $sentAt = Carbon::parse($logs['sent_at']);
+
+
+        // $sentAt = Carbon::parse($logs->sent_at);
+
+        return view('admin.logs.index', compact('logs', 'campaigns', 'statsToday', 'sentAt'));
     }
 
     public function show($id)

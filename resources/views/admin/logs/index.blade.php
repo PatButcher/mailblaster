@@ -122,7 +122,11 @@
                 <td class="px-5 py-3">
                     <span class="px-2 py-0.5 text-xs rounded-full bg-{{ $sc2 }}-100 text-{{ $sc2 }}-700 capitalize">{{ $log->status }}</span>
                 </td>
-                <td class="px-5 py-3 text-gray-400 text-xs">{{ $log->created_at->diffForHumans() }}</td>
+
+                
+                {{-- <td class="px-5 py-3 text-gray-400 text-xs">{{ $log->sent_at->diffForHumans() }}</td> --}}
+                <td class="px-5 py-3 text-gray-400 text-xs">{{ $log->sent_at->toDateTimeString() }}</td>
+                {{-- <td class="px-5 py-3 text-gray-400 text-xs">{{ $sentAt }}</td> --}}
                 <td class="px-5 py-3 text-right">
                     <a href="{{ route('admin.logs.show', $log->id) }}" class="text-indigo-600 hover:text-indigo-800 mr-2 text-xs"><i class="fas fa-eye"></i></a>
                     @if($log->status === 'failed')
