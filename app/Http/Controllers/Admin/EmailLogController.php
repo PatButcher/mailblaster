@@ -24,13 +24,33 @@ class EmailLogController extends Controller
         if ($request->filled('status'))      $query->where('status', $request->status);
         if ($request->filled('campaign_id')) $query->where('campaign_id', $request->campaign_id);
         if ($request->filled('search'))      $query->where('recipient_email', 'like', '%' . $request->search . '%');
-        if ($request->filled('date_from'))   $query->whereDate('sent_at', '>=', $request->date_from);
+        
+        // TODO: CREATE AN IF FOR SENT_AT != NULL ELSE CREATED_AT
+        
+        // failed attempt:  currently only pulls from one type, need to collect - i think
+            if ($request->filled('date_from')) {
+                if($query->where('sent_at', '=', null)) {
+                    $query->whereDate('created_at', '>=', $request->date_from);
+                } else {
+                    $query->whereDate('sent_at', '>=', $request->date_from);
+                }
+            }
 
-        // TODO: HOOK UP TO FRONT
-        // if ($request->filled('sent_at'))     $query->whereDate('sent_at', '>=', $request->sent_at);
-        $query->where('sent_at', '!=', null);
+            if ($request->filled('date_to')) {
+                if($query->where('sent_at', '=', null)) {
+                    $query->whereDate('created_at', '<=', $request->date_to);
+                } else {
+                    $query->whereDate('sent_at', '<=', $request->date_to);
+                }
+            }
 
-        if ($request->filled('date_to'))     $query->whereDate('sent_at', '<=', $request->date_to);
+
+            // if ($request->filled('date_to'))    if($query->where('sent_at', '=', null)) $query->whereDate('created_at', '<=', $request->date_to) else $query->whereDate('sent_at', '<=', $request->date_from);
+        // else
+        //     if ($request->filled('date_from'))   $query->whereDate('sent_at', '>=', $request->date_from);
+        //     if ($request->filled('date_to'))     $query->whereDate('sent_at', '<=', $request->date_to);
+
+
         if ($request->filled('type')) {
             $query->where('is_single_send', $request->type === 'single');
         }

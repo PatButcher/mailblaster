@@ -1,8 +1,6 @@
 
 # MAILBLASTER
 
-This application was inspired by the corruption of Greater Manchester Police.
-
 
 ## About
 
@@ -23,13 +21,24 @@ Automated mass-mailer email system with SMPT API credential rotation system and 
 
 
 
+## TODO
+
+1. Fix credential rotation - currently selects one and does not transition to next smtp server profile on limit hit.
+2. Setup Mailing Lists - 
+3. Fix email log date searching
+4. Test SYNC UNSUBSCRIBED CONTACTS command
+
+
 
 ## HOW TO USE
 
 ### ARTISAN COMMANDS
+
 campaigns:queue-recurring
 
 email:process-queue
+
+brevo:sync-unsubscribed-contacts
 
 
 ### .env
@@ -53,6 +62,9 @@ QUEUE_CONNECTION=redis
 
 # SEND QUEUED EMAILS - (HALF-HOURLY)
 0,15,30,45 * * * * /usr/bin/php '/your/local/webroot/mailblaster/artisan' 'email:process-queue' --no-interaction --quiet
+
+# SYNC UNSUBSCRIBED CONTACTS (untested)
+#2 0 * * * /usr/bin/php '/usr/share/angie/lara-mailblaster/artisan' 'brevo:sync-unsubscribed-contacts' --no-interaction --quiet
 ```
 
 ### start email process queue manually
