@@ -27,6 +27,7 @@ Automated mass-mailer email system with SMPT API credential rotation system and 
 2. Setup Mailing Lists - 
 3. Fix email log date searching
 4. Test SYNC UNSUBSCRIBED CONTACTS command
+5. Agent tags
 
 
 
